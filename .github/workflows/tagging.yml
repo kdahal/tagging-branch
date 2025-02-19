@@ -22,7 +22,7 @@ jobs:
         run: |
           latest_tag=$(git tag --sort=-v:refname | head -n 1)
           if [[ -z "$latest_tag" ]]; then
-            new_tag="dev-1.0.0"
+            new_tag="dev-1.0.1"
           else
             IFS='.' read -r -a parts <<< "${latest_tag#dev-}"
             new_tag="dev-${parts[0]}.${parts[1]}.$((parts[2] + 1))"
