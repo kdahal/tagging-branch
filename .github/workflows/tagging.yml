@@ -3,7 +3,7 @@ name: Build and Tag DEV
 on:
   push:
     branches:
-      - first-tagg
+      - dev
 
 jobs:
   build-and-tag:
