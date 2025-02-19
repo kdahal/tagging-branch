@@ -18,17 +18,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
 
-      - name: Create or Update DEV Branch
-        run: |
-          if git show-ref --quiet refs/heads/dev; then
-            echo "DEV branch exists. Checking out..."
-            git checkout dev
-            git merge main --no-edit
-          else
-            echo "Creating DEV branch..."
-            git checkout -b dev
-          fi
-
       - name: Auto Increment Tag
         run: |
           latest_tag=$(git tag --sort=-v:refname | head -n 1)
