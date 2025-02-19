@@ -20,16 +20,27 @@ jobs:
 
       - name: Auto Increment Tag
         run: |
-          latest_tag=$(git tag --sort=-v:refname | head -n 1)
+          # Fetch all tags
+          git fetch --tags
+        
+          # Get the latest dev tag
+          latest_tag=$(git tag -l "dev-*" --sort=-v:refname | head -n 1)
+            
+          # If no tag exists, start from dev-1.0.0
           if [[ -z "$latest_tag" ]]; then
-            new_tag="dev-1.0.1"
+            new_tag="dev-1.0.0"
           else
-            IFS='.' read -r -a parts <<< "${latest_tag#dev-}"
-            new_tag="dev-${parts[0]}.${parts[1]}.$((parts[2] + 1))"
+            # Extract numeric version components
+          version=$(echo "$latest_tag" | sed 's/dev-//')
+            IFS='.' read -r major minor patch <<< "$version"
+              
+          # Increment patch version
+            new_tag="dev-${major}.${minor}.$((patch + 1))"
           fi
-          echo "New Tag: $new_tag"
-          echo "TAG_NAME=$new_tag" >> $GITHUB_ENV
-
+        
+            echo "New Tag: $new_tag"
+            echo "TAG_NAME=$new_tag" >> $GITHUB_ENV
+        
       - name: Push DEV Branch and Tag
         run: |
           git push origin dev
