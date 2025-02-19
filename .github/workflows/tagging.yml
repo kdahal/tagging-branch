@@ -23,7 +23,6 @@ jobs:
           if git show-ref --quiet refs/heads/dev; then
             echo "DEV branch exists. Checking out..."
               git checkout dev
-              git merge main --no-edit
             else
               echo "Creating DEV branch..."
               git checkout -b dev
